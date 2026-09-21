@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -35,8 +35,8 @@ h1{font-size:28px;margin:6px 0 4px}.sub{color:#777;font-size:13px;margin-bottom:
 <body>
 <div class="wrap">
 <h1>Workout</h1>
-<div class="sub">근육 증가 · 주 4일 · 팔꿈치 부담 최소화</div>
-<div class="progressRow"><span>이번 주 진행률</span><span id="weekCount">0 / 4</span></div>
+<div class="sub">Muscle Gain · 4 Days/Week · Elbow & Low-Back Friendly</div>
+<div class="progressRow"><span>This Week</span><span id="weekCount">0 / 4</span></div>
 <div class="progressBar"><div id="weekBar"></div></div>
 <div class="tabs">
 <button data-day="0" class="active">DAY 1</button>
@@ -46,33 +46,33 @@ h1{font-size:28px;margin:6px 0 4px}.sub{color:#777;font-size:13px;margin-bottom:
 </div>
 <div id="content"></div>
 </div>
-<div class="bottom"><button id="complete">오늘 운동 완료</button></div>
+<div class="bottom"><button id="complete">Complete Today's Workout</button></div>
 
 <script>
 const plans=[
-{title:"코어 / 복근",tag:"CORE",
- body:{name:"리버스 크런치",part:"복근",reps:"12-15",sets:"2"},
+{title:"Core / Low Back Support",tag:"CORE",
+ body:{name:"Dead Bug",part:"Deep Core / Trunk Stability",reps:"8-10 / side",sets:"2"},
  machines:[
-  {name:"복근 크런치 머신",part:"복근",reps:"8-12",sets:"3",alts:["케이블 크런치","니링 케이블 크런치"]},
-  {name:"백 익스텐션 머신",part:"허리 / 둔근",reps:"10-15",sets:"3",alts:["45° 백 익스텐션","힙 익스텐션 머신"]}
+  {name:"Cable Pallof Press",part:"Core / Anti-Rotation",reps:"8-12 / side",sets:"3",alts:["Seated Cable Pallof Press","Standing Cable Anti-Rotation Hold"]},
+  {name:"Hip Thrust Machine",part:"Glutes / Pelvic Stability",reps:"8-12",sets:"3",alts:["Glute Drive Machine","Glute Bridge Machine"]}
  ]},
-{title:"어깨 / 등",tag:"BACK",
- body:{name:"점핑잭",part:"워밍업",reps:"30-40",sets:"2"},
+{title:"Shoulders / Back",tag:"BACK",
+ body:{name:"Jumping Jacks",part:"Warm-Up",reps:"30-40",sets:"2"},
  machines:[
-  {name:"리버스 펙덱",part:"후면 어깨 / 상부 등",reps:"8-12",sets:"3",alts:["리어 델트 머신","케이블 리어 델트 플라이"]},
-  {name:"레터럴 레이즈 머신",part:"측면 어깨",reps:"10-15",sets:"3",alts:["케이블 레터럴 레이즈","덤벨 레터럴 레이즈"]}
+  {name:"Reverse Pec Deck",part:"Rear Delts / Upper Back",reps:"8-12",sets:"3",alts:["Rear Delt Machine","Cable Rear Delt Fly"]},
+  {name:"Lateral Raise Machine",part:"Side Delts",reps:"10-15",sets:"3",alts:["Cable Lateral Raise","Dumbbell Lateral Raise"]}
  ]},
-{title:"팔",tag:"ARMS",
- body:{name:"하이니",part:"워밍업",reps:"30-40",sets:"2"},
+{title:"Arms",tag:"ARMS",
+ body:{name:"High Knees",part:"Warm-Up",reps:"30-40",sets:"2"},
  machines:[
-  {name:"로프 해머 컬",part:"이두",reps:"8-12",sets:"3",alts:["케이블 해머 컬","머신 바이셉 컬"]},
-  {name:"로프 트라이셉 푸쉬다운",part:"삼두",reps:"8-12",sets:"3",alts:["케이블 바 푸쉬다운","트라이셉 익스텐션 머신"]}
+  {name:"Rope Hammer Curl",part:"Biceps / Brachialis",reps:"8-12",sets:"3",alts:["Cable Hammer Curl","Biceps Curl Machine"]},
+  {name:"Rope Triceps Pushdown",part:"Triceps",reps:"8-12",sets:"3",alts:["Cable Bar Pushdown","Triceps Extension Machine"]}
  ]},
-{title:"하체",tag:"LEGS",
- body:{name:"맨몸 스쿼트",part:"허벅지 / 둔근",reps:"15-20",sets:"2"},
+{title:"Lower Body",tag:"LEGS",
+ body:{name:"Bodyweight Squat",part:"Quads / Glutes",reps:"15-20",sets:"2"},
  machines:[
-  {name:"레그 프레스",part:"대퇴사두 / 둔근",reps:"8-12",sets:"3",alts:["핵 스쿼트 머신","스미스 머신 스쿼트"]},
-  {name:"레그 컬",part:"햄스트링",reps:"8-12",sets:"3",alts:["시티드 레그 컬","라잉 레그 컬"]}
+  {name:"Leg Press",part:"Quads / Glutes",reps:"8-12",sets:"3",alts:["Hack Squat Machine","Smith Machine Squat"]},
+  {name:"Leg Curl",part:"Hamstrings",reps:"8-12",sets:"3",alts:["Seated Leg Curl","Lying Leg Curl"]}
  ]}
 ];
 
@@ -87,11 +87,11 @@ function exHTML(ex,id,body=false){
  return `<div class="ex ${x.done?"done":""}" data-wrap="${id}">
  <div class="top"><input type="checkbox" data-check="${id}" ${x.done?"checked":""}><div><div class="name">${ex.name}</div><div class="part">${ex.part}</div></div></div>
  <div class="grid">
-  <input data-id="${id}" data-field="weight" value="${x.weight??(body?"맨몸":"")}" placeholder="무게">
-  <input data-id="${id}" data-field="reps" value="${x.reps??ex.reps}" placeholder="횟수">
-  <input data-id="${id}" data-field="sets" value="${x.sets??ex.sets}" placeholder="세트">
+  <input data-id="${id}" data-field="weight" value="${x.weight??(body?"Bodyweight":"")}" placeholder="Weight">
+  <input data-id="${id}" data-field="reps" value="${x.reps??ex.reps}" placeholder="Reps">
+  <input data-id="${id}" data-field="sets" value="${x.sets??ex.sets}" placeholder="Sets">
  </div>
- ${ex.alts?`<div class="alt"><strong>대체 운동</strong><div>1. ${ex.alts[0]}</div><div>2. ${ex.alts[1]}</div></div>`:""}
+ ${ex.alts?`<div class="alt"><strong>Alternatives</strong><div>1. ${ex.alts[0]}</div><div>2. ${ex.alts[1]}</div></div>`:""}
  </div>`;
 }
 
@@ -107,9 +107,13 @@ function render(){
  const p=plans[day];
  document.getElementById("content").innerHTML=`<div class="card">
  <div class="head"><h2>${p.title}</h2><span class="tag">${p.tag}</span></div>
- <div class="sec"><div class="label">맨몸운동 1개</div>${exHTML(p.body,"b0",true)}</div>
- <div class="sec"><div class="label">기구운동 2개</div>${p.machines.map((m,i)=>exHTML(m,"m"+i)).join("")}</div>
- <div class="small">팔꿈치 통증이 생기면 해당 운동은 중단하세요. Push-up, pull-up, dead hang, plank는 제외했습니다.</div>
+ <div class="sec"><div class="label">BODYWEIGHT · 1 EXERCISE</div>${exHTML(p.body,"b0",true)}</div>
+ <div class="sec"><div class="label">MACHINES / CABLES · 2 EXERCISES</div>${p.machines.map((m,i)=>exHTML(m,"m"+i)).join("")}</div>
+ <div class="small">${day===0
+ ? "Keep your spine neutral and move slowly. Avoid exercises that reproduce low-back pain, especially loaded bending, twisting, or back extension."
+ : day===2
+ ? "Only perform direct arm exercises if they are pain-free. Stop if you feel elbow pain."
+ : "Stop any exercise that causes elbow or low-back pain. Push-ups, pull-ups, dead hangs, and planks are intentionally excluded."}</div>
  </div>`;
 
  document.querySelectorAll("[data-check]").forEach(el=>el.onchange=()=>{
@@ -118,7 +122,7 @@ function render(){
  document.querySelectorAll("[data-field]").forEach(el=>el.oninput=()=>{
    const s=getState(day),id=el.dataset.id;s[id]=s[id]||{};s[id][el.dataset.field]=el.value;saveState(day,s);
  });
- document.getElementById("complete").textContent=localStorage.getItem(doneKey(day))==="1"?"완료 취소":"오늘 운동 완료";
+ document.getElementById("complete").textContent=localStorage.getItem(doneKey(day))==="1"?"Undo Completion":"Complete Today's Workout";
  updateWeek();
 }
 
