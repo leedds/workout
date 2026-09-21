@@ -24,7 +24,7 @@ h1{font-size:28px;margin:6px 0 4px}.sub{color:#777;font-size:13px;margin-bottom:
 .top input{width:22px;height:22px}.name{font-weight:800;font-size:16px}.part{font-size:12px;color:#777;margin-top:2px}
 .grid{display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:8px;margin-top:10px}
 .grid input{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:10px;padding:10px;text-align:center;font-size:14px}
-.small{font-size:11px;color:#777;margin-top:7px;line-height:1.4}
+.small{font-size:11px;color:#777;margin-top:9px;line-height:1.45}
 .alt{margin-top:9px;background:#f7f7f8;border-radius:10px;padding:9px}
 .alt strong{display:block;font-size:11px;margin-bottom:4px}.alt div{font-size:12px;margin:4px 0}
 .bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(245,245,247,.95);padding:10px 14px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #ddd}
@@ -50,44 +50,44 @@ h1{font-size:28px;margin:6px 0 4px}.sub{color:#777;font-size:13px;margin-bottom:
 
 <script>
 const plans=[
-{title:"Core / Low Back Support",tag:"CORE",
- body:{name:"Dead Bug",part:"Deep Core / Trunk Stability",reps:"8-10 / side",sets:"2"},
+{title:"Core / Glutes",tag:"CORE",
+ first:{name:"Dead Bug",part:"Deep Core / Trunk Stability",weight:"Bodyweight",reps:"8-10 / side",sets:"2"},
  machines:[
-  {name:"Cable Pallof Press",part:"Core / Anti-Rotation",reps:"8-12 / side",sets:"3",alts:["Seated Cable Pallof Press","Standing Cable Anti-Rotation Hold"]},
-  {name:"Hip Thrust Machine",part:"Glutes / Pelvic Stability",reps:"8-12",sets:"3",alts:["Glute Drive Machine","Glute Bridge Machine"]}
+  {name:"Abdominal Crunch Machine",part:"Abs / Core",weight:"",reps:"8-12",sets:"3",alts:["Ab Coaster","Kneeling Cable Crunch"]},
+  {name:"Hip Thrust Machine",part:"Glutes / Pelvic Stability",weight:"",reps:"8-12",sets:"3",alts:["Glute Drive Machine","Glute Bridge Machine"]}
  ]},
 {title:"Shoulders / Back",tag:"BACK",
- body:{name:"Jumping Jacks",part:"Warm-Up",reps:"30-40",sets:"2"},
+ first:{name:"Jumping Jacks",part:"Warm-Up",weight:"Bodyweight",reps:"30-40",sets:"2"},
  machines:[
-  {name:"Reverse Pec Deck",part:"Rear Delts / Upper Back",reps:"8-12",sets:"3",alts:["Rear Delt Machine","Cable Rear Delt Fly"]},
-  {name:"Lateral Raise Machine",part:"Side Delts",reps:"10-15",sets:"3",alts:["Cable Lateral Raise","Dumbbell Lateral Raise"]}
+  {name:"Reverse Pec Deck",part:"Rear Delts / Upper Back",weight:"",reps:"8-12",sets:"3",alts:["Rear Delt Machine","Cable Rear Delt Fly"]},
+  {name:"Lateral Raise Machine",part:"Side Delts",weight:"",reps:"10-15",sets:"3",alts:["Cable Lateral Raise","Dumbbell Lateral Raise"]}
  ]},
 {title:"Arms",tag:"ARMS",
- body:{name:"High Knees",part:"Warm-Up",reps:"30-40",sets:"2"},
+ first:{name:"High Knees",part:"Warm-Up",weight:"Bodyweight",reps:"30-40",sets:"2"},
  machines:[
-  {name:"Rope Hammer Curl",part:"Biceps / Brachialis",reps:"8-12",sets:"3",alts:["Cable Hammer Curl","Biceps Curl Machine"]},
-  {name:"Rope Triceps Pushdown",part:"Triceps",reps:"8-12",sets:"3",alts:["Cable Bar Pushdown","Triceps Extension Machine"]}
+  {name:"Seated Biceps Curl Machine",part:"Biceps",weight:"",reps:"8-12",sets:"3",alts:["Preacher Curl Machine","Cable Curl with EZ-Bar"]},
+  {name:"Rope Triceps Pushdown",part:"Triceps",weight:"",reps:"8-12",sets:"3",alts:["Cable Bar Pushdown","Triceps Extension Machine"]}
  ]},
 {title:"Lower Body",tag:"LEGS",
- body:{name:"Bodyweight Squat",part:"Quads / Glutes",reps:"15-20",sets:"2"},
+ first:{name:"Goblet Squat",part:"Quads / Glutes",weight:"30 lb",reps:"8-12",sets:"3"},
  machines:[
-  {name:"Leg Press",part:"Quads / Glutes",reps:"8-12",sets:"3",alts:["Hack Squat Machine","Smith Machine Squat"]},
-  {name:"Leg Curl",part:"Hamstrings",reps:"8-12",sets:"3",alts:["Seated Leg Curl","Lying Leg Curl"]}
+  {name:"Leg Press",part:"Quads / Glutes",weight:"",reps:"8-12",sets:"3",alts:["Hack Squat Machine","Smith Machine Squat"]},
+  {name:"Seated Leg Curl",part:"Hamstrings",weight:"",reps:"8-12",sets:"3",alts:["Lying Leg Curl","Standing Leg Curl Machine"]}
  ]}
 ];
 
-let day=Number(localStorage.getItem("workout_day")||0);
-const stateKey=d=>"workout_state_"+d;
-const doneKey=d=>"workout_done_"+d;
+let day=Number(localStorage.getItem("workout_v2_day")||0);
+const stateKey=d=>"workout_v2_state_"+d;
+const doneKey=d=>"workout_v2_done_"+d;
 const getState=d=>JSON.parse(localStorage.getItem(stateKey(d))||"{}");
 const saveState=(d,s)=>localStorage.setItem(stateKey(d),JSON.stringify(s));
 
-function exHTML(ex,id,body=false){
+function exHTML(ex,id){
  const s=getState(day), x=s[id]||{};
  return `<div class="ex ${x.done?"done":""}" data-wrap="${id}">
  <div class="top"><input type="checkbox" data-check="${id}" ${x.done?"checked":""}><div><div class="name">${ex.name}</div><div class="part">${ex.part}</div></div></div>
  <div class="grid">
-  <input data-id="${id}" data-field="weight" value="${x.weight??(body?"Bodyweight":"")}" placeholder="Weight">
+  <input data-id="${id}" data-field="weight" value="${x.weight??ex.weight}" placeholder="Weight">
   <input data-id="${id}" data-field="reps" value="${x.reps??ex.reps}" placeholder="Reps">
   <input data-id="${id}" data-field="sets" value="${x.sets??ex.sets}" placeholder="Sets">
  </div>
@@ -105,15 +105,18 @@ function updateWeek(){
 function render(){
  document.querySelectorAll(".tabs button").forEach((b,i)=>b.classList.toggle("active",i===day));
  const p=plans[day];
+ const note = day===0
+   ? "Keep your low back supported and move slowly. Stop if you feel low-back pain. Avoid excessive bending, twisting, or back extension."
+   : day===2
+   ? "Only perform direct arm exercises if they are pain-free. Stop if you feel elbow pain."
+   : day===3
+   ? "For goblet squats and leg press, use a pain-free depth and avoid letting your low back round at the bottom."
+   : "Stop any exercise that causes elbow or low-back pain.";
  document.getElementById("content").innerHTML=`<div class="card">
  <div class="head"><h2>${p.title}</h2><span class="tag">${p.tag}</span></div>
- <div class="sec"><div class="label">BODYWEIGHT · 1 EXERCISE</div>${exHTML(p.body,"b0",true)}</div>
+ <div class="sec"><div class="label">FIRST EXERCISE</div>${exHTML(p.first,"f0")}</div>
  <div class="sec"><div class="label">MACHINES / CABLES · 2 EXERCISES</div>${p.machines.map((m,i)=>exHTML(m,"m"+i)).join("")}</div>
- <div class="small">${day===0
- ? "Keep your spine neutral and move slowly. Avoid exercises that reproduce low-back pain, especially loaded bending, twisting, or back extension."
- : day===2
- ? "Only perform direct arm exercises if they are pain-free. Stop if you feel elbow pain."
- : "Stop any exercise that causes elbow or low-back pain. Push-ups, pull-ups, dead hangs, and planks are intentionally excluded."}</div>
+ <div class="small">${note}</div>
  </div>`;
 
  document.querySelectorAll("[data-check]").forEach(el=>el.onchange=()=>{
@@ -127,7 +130,7 @@ function render(){
 }
 
 document.querySelectorAll(".tabs button").forEach(btn=>btn.onclick=()=>{
- day=Number(btn.dataset.day);localStorage.setItem("workout_day",day);render();
+ day=Number(btn.dataset.day);localStorage.setItem("workout_v2_day",day);render();
 });
 document.getElementById("complete").onclick=()=>{
  const k=doneKey(day);
